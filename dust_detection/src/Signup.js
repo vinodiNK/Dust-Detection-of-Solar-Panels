@@ -38,38 +38,39 @@ export default function Signup() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
+        <h2>🌞 Dust Detection</h2>
+        <p className="auth-form-subtitle">Create your account to begin</p>
         {error && <div className="auth-error">{error}</div>}
-        <label>
-          Email
+        <div className="form-group">
+          <label>Email Address</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="name@example.com"
           />
-        </label>
-        <label>
-          Password
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="••••••••"
           />
-        </label>
-        <label>
-          Confirm Password
+        </div>
+        <div className="form-group">
+          <label>Confirm Password</label>
           <input
             type="password"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            placeholder="Confirm Password"
+            placeholder="••••••••"
           />
-        </label>
+        </div>
         <button type="submit">Create Account</button>
         <p>
-          Already registered? <Link to="/">Log in</Link>
+          Already have an account? <Link to="/">Sign in here</Link>
         </p>
       </form>
     </div>

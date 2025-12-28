@@ -24,29 +24,30 @@ export default function Login() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>🌞 Dust Detection</h2>
+        <p className="auth-form-subtitle">Sign in to your account</p>
         {error && <div className="auth-error">{error}</div>}
-        <label>
-          Email
+        <div className="form-group">
+          <label>Email Address</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="name@example.com"
           />
-        </label>
-        <label>
-          Password
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="••••••••"
           />
-        </label>
-        <button type="submit">Log In</button>
+        </div>
+        <button type="submit">Sign In</button>
         <p>
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          Don't have an account? <Link to="/signup">Create one now</Link>
         </p>
       </form>
     </div>
