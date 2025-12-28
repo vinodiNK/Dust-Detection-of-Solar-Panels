@@ -4,12 +4,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'REPLACE_WITH_YOUR_API_KEY',
-  authDomain: 'REPLACE_WITH_YOUR_AUTH_DOMAIN',
-  projectId: 'REPLACE_WITH_YOUR_PROJECT_ID',
-  storageBucket: 'REPLACE_WITH_YOUR_STORAGE_BUCKET',
-  messagingSenderId: 'REPLACE_WITH_YOUR_MESSAGING_SENDER_ID',
-  appId: 'REPLACE_WITH_YOUR_APP_ID'
+  apiKey: "AIzaSyCMvRrA4q23p2bdXAZ7yVAk-SiSbwelRJo",
+  authDomain: "dust-detection-of-solar-panels.firebaseapp.com",
+  projectId: "dust-detection-of-solar-panels",
+  storageBucket: "dust-detection-of-solar-panels.firebasestorage.app",
+  messagingSenderId: "720925054070",
+  appId: "1:720925054070:web:8b5514f819eade09263b57",
+  measurementId: "G-L9SWZ08L1V"
 };
 
 const app = initializeApp(firebaseConfig);

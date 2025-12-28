@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,8 +16,9 @@ export default function Login() {
       setError('Please enter email and password');
       return;
     }
-    // TODO: replace with real auth
-    navigate('/home');
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => navigate('/home'))
+      .catch((err) => setError(err.message || 'Login failed'));
   }
 
   return (

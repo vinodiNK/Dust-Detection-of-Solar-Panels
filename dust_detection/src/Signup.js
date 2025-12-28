@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth, db } from './firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -19,8 +22,17 @@ export default function Signup() {
       setError('Passwords do not match');
       return;
     }
-    // TODO: replace with real signup flow
-    navigate('/home');
+    // create user with Firebase Auth then save profile to Firestore
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const uid = userCredential.user.uid;
+        return setDoc(doc(db, 'users', uid), {
+          email,
+          createdAt: new Date().toISOString(),
+        });
+      })
+      .then(() => navigate('/home'))
+      .catch((err) => setError(err.message || 'Signup failed'));
   }
 
   return (
