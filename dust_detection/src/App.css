@@ -45,7 +45,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    background: url('./assets/solar.jpg') center/cover no-repeat;
+    background-attachment: fixed;
 }
 
 .auth-form {

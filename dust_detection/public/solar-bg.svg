@@ -1,0 +1,27 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1929;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a3a52;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="panels" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect x="10" y="10" width="80" height="80" fill="#1f4d6d" stroke="#0a3a5c" stroke-width="2"/>
+      <rect x="110" y="10" width="80" height="80" fill="#2a5a7a" stroke="#0a3a5c" stroke-width="2"/>
+      <rect x="10" y="110" width="80" height="80" fill="#2a5a7a" stroke="#0a3a5c" stroke-width="2"/>
+      <rect x="110" y="110" width="80" height="80" fill="#1f4d6d" stroke="#0a3a5c" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <!-- Sky gradient background -->
+  <rect width="1920" height="1080" fill="url(#skyGrad)"/>
+  <!-- Solar panels pattern -->
+  <rect width="1920" height="1080" fill="url(#panels)" opacity="0.3"/>
+  <!-- Sun circle top right -->
+  <circle cx="1600" cy="150" r="120" fill="#fbbf24" opacity="0.15"/>
+  <!-- Dust particles effect -->
+  <circle cx="400" cy="300" r="3" fill="#fcd34d" opacity="0.4"/>
+  <circle cx="600" cy="200" r="2" fill="#fcd34d" opacity="0.3"/>
+  <circle cx="1200" cy="500" r="2.5" fill="#fcd34d" opacity="0.35"/>
+  <circle cx="1500" cy="800" r="2" fill="#fcd34d" opacity="0.3"/>
+  <circle cx="300" cy="900" r="3" fill="#fcd34d" opacity="0.25"/>
+  <circle cx="1700" cy="400" r="2.5" fill="#fcd34d" opacity="0.4"/>
+</svg>
