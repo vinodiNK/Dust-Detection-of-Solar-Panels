@@ -5,11 +5,11 @@ import "./Home.css";
 const BACKEND_API = "http://localhost:5000"; // Flask backend URL
 
 export default function Home() {
-  const [file, setFile] = useState(null); // selected file
-  const [preview, setPreview] = useState(null); // image preview
-  const [result, setResult] = useState(null); // prediction result
-  const [loading, setLoading] = useState(false); // loading state
-  const [error, setError] = useState(null); // error state
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -27,7 +27,7 @@ export default function Home() {
     }
   };
 
-  // Upload and get prediction
+  // Upload image and get prediction
   const handleUpload = async () => {
     if (!file) {
       alert("Please select an image first!");
@@ -41,13 +41,19 @@ export default function Home() {
       const formData = new FormData();
       formData.append("image", file);
 
-      const response = await axios.post(`${BACKEND_API}/predict`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${BACKEND_API}/predict`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
       setResult(response.data);
+
+      // ⚠️ ONLY show alert if dusty
+      if (response.data.result.toLowerCase().includes("dust")) {
+        alert("⚠️ WARNING: Dust detected on the solar panel!");
+      }
+
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || "Something went wrong!");
@@ -76,12 +82,16 @@ export default function Home() {
         {loading ? "Analyzing..." : "Check Dustiness"}
       </button>
 
-      {/* Prediction Result */}
+      {/* Result & Warning */}
       {result && (
         <div className="result">
           <h3>Result: {result.result}</h3>
-          <p>Confidence: {(result.confidence * 100).toFixed(2)}%</p>
-          <p>Dustiness Percentage: {result.dustiness_percentage}%</p>
+
+          {result.result.toLowerCase().includes("dust") && (
+            <p className="warning">
+              ⚠️ Dust detected! Cleaning the solar panel is recommended.
+            </p>
+          )}
         </div>
       )}
 

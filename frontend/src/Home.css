@@ -35,3 +35,33 @@ button {
     color: red;
     margin-top: 10px;
 }
+
+.result {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.result.dusty {
+    background-color: #ffe5e5;
+    border: 1px solid red;
+}
+
+.result.clean {
+    background-color: #e6ffe6;
+    border: 1px solid green;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+}
