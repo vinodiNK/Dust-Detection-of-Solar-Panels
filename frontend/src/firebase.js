@@ -8,7 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCMvRrA4q23p2bdXAZ7yVAk-SiSbwelRJo",
   authDomain: "dust-detection-of-solar-panels.firebaseapp.com",
   projectId: "dust-detection-of-solar-panels",
-  storageBucket: "dust-detection-of-solar-panels.firebasestorage.app",
+  storageBucket: "dust-detection-of-solar-panels.appspot.com",
   messagingSenderId: "720925054070",
   appId: "1:720925054070:web:8b5514f819eade09263b57",
   measurementId: "G-L9SWZ08L1V"

@@ -1,88 +1,92 @@
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { useState } from 'react';
-import { storage } from './firebase';
+import axios from "axios";
+import { useState } from "react";
+import "./Home.css";
+
+const BACKEND_API = "http://localhost:5000"; // Flask backend URL
 
 export default function Home() {
-	const [file, setFile] = useState(null);
-	const [preview, setPreview] = useState(null);
-	const [progress, setProgress] = useState(0);
-	const [error, setError] = useState(null);
-	const [downloadURL, setDownloadURL] = useState(null);
+  const [file, setFile] = useState(null); // selected file
+  const [preview, setPreview] = useState(null); // image preview
+  const [result, setResult] = useState(null); // prediction result
+  const [loading, setLoading] = useState(false); // loading state
+  const [error, setError] = useState(null); // error state
 
-	function handleFileChange(e) {
-		setError(null);
-		const f = e.target.files && e.target.files[0];
-		if (!f) return;
-		if (!f.type.startsWith('image/')) {
-			setError('Please select an image file');
-			return;
-		}
-		setFile(f);
-		setPreview(URL.createObjectURL(f));
-		setProgress(0);
-		setDownloadURL(null);
-	}
+  // Handle file selection
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setResult(null);
+    setError(null);
 
-	function handleUpload() {
-		setError(null);
-		if (!file) {
-			setError('No file selected');
-			return;
-		}
-		const filename = `${Date.now()}_${file.name}`;
-		const storageRef = ref(storage, `images/${filename}`);
-		const uploadTask = uploadBytesResumable(storageRef, file);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => setPreview(reader.result);
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setPreview(null);
+    }
+  };
 
-		uploadTask.on(
-			'state_changed',
-			(snapshot) => {
-				const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-				setProgress(pct);
-			},
-			(err) => {
-				setError(err.message || 'Upload failed');
-			},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-					setDownloadURL(url);
-				}).catch((err) => setError(err.message || 'Failed to get download URL'));
-			}
-		);
-	}
+  // Upload and get prediction
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please select an image first!");
+      return;
+    }
 
-	return (
-		<div style={{ padding: 16, maxWidth: 640 }}>
-			<h2>Upload Image</h2>
-			<input type="file" accept="image/*" onChange={handleFileChange} />
+    setLoading(true);
+    setError(null);
 
-			{preview && (
-				<div style={{ marginTop: 12 }}>
-					<img src={preview} alt="preview" style={{ maxWidth: '100%', maxHeight: 300 }} />
-				</div>
-			)}
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
 
-			<div style={{ marginTop: 12 }}>
-				<button onClick={handleUpload} disabled={!file}>
-					Upload
-				</button>
-			</div>
+      const response = await axios.post(`${BACKEND_API}/predict`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-			{progress > 0 && (
-				<div style={{ marginTop: 8 }}>Progress: {progress}%</div>
-			)}
+      setResult(response.data);
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.error || "Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-			{error && (
-				<div style={{ color: 'red', marginTop: 8 }}>{error}</div>
-			)}
+  return (
+    <div className="home-container">
+      <h2>Solar Panel Dust Detection</h2>
 
-			{downloadURL && (
-				<div style={{ marginTop: 12 }}>
-					<strong>Uploaded URL:</strong>
-					<div>
-						<a href={downloadURL} target="_blank" rel="noreferrer">{downloadURL}</a>
-					</div>
-				</div>
-			)}
-		</div>
-	);
+      {/* File Input */}
+      <input type="file" accept="image/*" onChange={handleFileChange} />
+
+      {/* Image Preview */}
+      {preview && (
+        <div className="preview">
+          <h4>Preview:</h4>
+          <img src={preview} alt="preview" className="preview-image" />
+        </div>
+      )}
+
+      {/* Upload Button */}
+      <button onClick={handleUpload} disabled={loading}>
+        {loading ? "Analyzing..." : "Check Dustiness"}
+      </button>
+
+      {/* Prediction Result */}
+      {result && (
+        <div className="result">
+          <h3>Result: {result.result}</h3>
+          <p>Confidence: {(result.confidence * 100).toFixed(2)}%</p>
+          <p>Dustiness Percentage: {result.dustiness_percentage}%</p>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && <p className="error">{error}</p>}
+    </div>
+  );
 }
