@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { useState } from 'react';
 import { storage } from './firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 export default function Home() {
 	const [file, setFile] = useState(null);

@@ -1,0 +1,140 @@
+/* Styles for Home upload UI */
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    min-height: calc(100vh - 80px);
+}
+
+.card {
+    width: 100%;
+    max-width: 820px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
+    padding: 28px;
+    box-sizing: border-box;
+}
+
+.card-header h1 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    color: #0f172a;
+}
+
+.muted {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.upload-area {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 18px;
+    align-items: center;
+}
+
+.dropzone {
+    display: block;
+    border: 2px dashed #e6eefc;
+    border-radius: 10px;
+    padding: 22px;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+    background: linear-gradient(180deg, rgba(79, 70, 229, 0.03), rgba(79, 70, 229, 0.01));
+}
+
+.dropzone input[type="file"] {
+    display: none;
+}
+
+.drop-content {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.drop-text {
+    font-size: 15px;
+    color: #374151;
+}
+
+.preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8fafc;
+    padding: 6px;
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 220px;
+    display: block;
+}
+
+.actions {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn.primary {
+    background: linear-gradient(90deg, #4F46E5, #7C3AED);
+    color: white;
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.18);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.progress-wrap {
+    flex: 1;
+    background: #eef2ff;
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4F46E5, #7C3AED);
+    width: 0%;
+    transition: width .25s ease;
+}
+
+.status {
+    margin-top: 14px;
+}
+
+.error {
+    color: #b91c1c;
+}
+
+.result a {
+    color: #4F46E5;
+    margin-left: 8px;
+}
+
+@media (max-width: 700px) {
+    .upload-area {
+        grid-template-columns: 1fr;
+    }
+}
