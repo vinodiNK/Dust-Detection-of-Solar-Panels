@@ -126,7 +126,7 @@ export default function Home() {
 
 						{result && (
 							<button type="button" className="analyze-btn" onClick={handleAddNewImage} style={{ marginTop: 8 }}>
-								Add New Image
+								Clear Image
 							</button>
 						)}
 					</form>
@@ -137,25 +137,24 @@ export default function Home() {
           {result && (() => {
             const status = getStatusMessage(result.result);
 
-            return (
-              <div
-                className={`result-box ${
-                  status.type === 'good' ? 'clean' : 'dusty'
-                }`}
-              >
-                <h2>{result.result}</h2>
+							return (
+								<div
+									className={`result-box ${
+										status.type === 'good' ? 'clean' : 'dusty'
+									}`}
+							>
+								<h2>{result.result}</h2>
+								<p className="small">Dustiness: {result.dustiness_percentage}%</p>
 
-  
-
-                <div
-                  className={`status-message ${
-                    status.type === 'good' ? 'good-msg' : 'warning-msg'
-                  }`}
-                >
-                  {status.message}
-                </div>
-              </div>
-            );
+								<div
+									className={`status-message ${
+										status.type === 'good' ? 'good-msg' : 'warning-msg'
+									}`}
+								>
+									{status.message}
+								</div>
+							</div>
+						);
           })()}
         </div>
       </main>
