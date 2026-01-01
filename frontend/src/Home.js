@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import './Home.css';
@@ -11,6 +11,7 @@ export default function Home() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const addInputRef = useRef(null);
 
 	function handleFileChange(e) {
 		setError('');
@@ -49,6 +50,15 @@ export default function Home() {
 		} finally {
 			setLoading(false);
 		}
+	}
+
+	function handleAddNewImage() {
+		// reset state then open file picker for a new image
+		setFile(null);
+		setPreview('');
+		setResult(null);
+		setError('');
+		if (addInputRef.current) addInputRef.current.click();
 	}
 
   function getStatusMessage(resultText) {
@@ -94,6 +104,9 @@ export default function Home() {
 							📤 Upload Solar Panel Image
 						</label>
 
+						{/* hidden input used to trigger file picker when adding new image */}
+						<input ref={addInputRef} type="file" accept="image/*" onChange={handleFileChange} hidden />
+
 						{preview && (
 							<div className="preview">
 								<img src={preview} alt="preview" />
@@ -105,6 +118,12 @@ export default function Home() {
 						<button type="submit" className="analyze-btn" disabled={loading}>
 							{loading ? 'Analyzing...' : 'Analyze Image'}
 						</button>
+
+						{result && (
+							<button type="button" className="analyze-btn" onClick={handleAddNewImage} style={{ marginTop: 8 }}>
+								Add New Image
+							</button>
+						)}
 					</form>
 
 					{loading && <div className="loader">🔍 AI is analyzing the image...</div>}
