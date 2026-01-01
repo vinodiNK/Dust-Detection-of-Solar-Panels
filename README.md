@@ -3,4 +3,4 @@
 ## User Interface
 
 ### Login Page
-![Login Page](screenshots/login.jpg)
+![Login Page](frontend/screenshots/login.jpg)
