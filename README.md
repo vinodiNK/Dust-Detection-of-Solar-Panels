@@ -3,7 +3,11 @@
 ## User Interface
 
 ### Login Page
+<<<<<<< HEAD
 ![Login Page](screenshots/login.jpg)
 
 ### Register Page
 ![Register Page](screenshots/register.jpg)
+=======
+![Login Page](frontend/screenshots/login.jpg)
+>>>>>>> 3ffb83df8f67a92f40726bfd32b216c1d65933d5
