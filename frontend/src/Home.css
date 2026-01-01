@@ -16,8 +16,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 32px;
-    border-bottom: 1px solid rgba(34, 197, 94, 0.12);
+    padding: 28px 50px;
+    background: linear-gradient(90deg, #fde6b3, #e6f3e6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .home-header h1 {
@@ -162,7 +163,7 @@
 }
 
 .result-box.dusty {
-    background: #fff7ed;
+    background: #edfff5;
     border-color: #f97316;
     color: #7c2d12;
 }
@@ -175,4 +176,52 @@
     padding: 16px;
     font-size: 13px;
     color: #14532d;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+
+/* TITLE */
+
+.title-text h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f5f3a;
+    margin: 0;
+}
+
+.title-text p {
+    font-size: 15px;
+    color: #2f6f4f;
+    margin-top: 4px;
+}
+
+
+/* SIGN OUT BUTTON */
+
+.logout-btn {
+    background: linear-gradient(135deg, #0b4d2c, #1f7a4a);
+    color: #ffffff;
+    border: none;
+    padding: 14px 34px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
 }

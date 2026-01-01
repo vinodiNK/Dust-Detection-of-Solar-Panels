@@ -1,6 +1,7 @@
 import { signOut } from 'firebase/auth';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import solarLogo from "./assets/solar-logo.png";
 import { auth } from './firebase';
 import './Home.css';
 
@@ -87,14 +88,18 @@ export default function Home() {
 	return (
 		<div className="home-page">
 			<header className="home-header">
-				<div>
-					<h1>Solar Panel Dust Detection System</h1>
-					<p>AI-based image analysis for dust detection</p>
-				</div>
-				<button className="logout-btn" onClick={handleLogout}>
-					Sign Out
-				</button>
-			</header>
+  <div className="header-left">
+    <img src={solarLogo} alt="Solar Logo" className="logo" />
+    <div className="title-text">
+      <h1>Solar Panel Dust Detection System</h1>
+      <p>AI-based image analysis for dust detection</p>
+    </div>
+  </div>
+
+  <button className="logout-btn" onClick={handleLogout}>
+    Sign Out
+  </button>
+</header>
 
 			<main className="home-main">
 				<div className="card">
