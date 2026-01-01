@@ -11,5 +11,6 @@
 ### Home Page
 ![Home Page](frontend/screenshots/upload.jpg)
 ![Home Page](frontend/screenshots/result.jpg)
+![Home Page](frontend/screenshots/result2.jpg)
 
 
