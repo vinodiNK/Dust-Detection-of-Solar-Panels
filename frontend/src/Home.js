@@ -1,102 +1,145 @@
-import axios from "axios";
-import { useState } from "react";
-import "./Home.css";
-
-const BACKEND_API = "http://localhost:5000"; // Flask backend URL
+import { signOut } from 'firebase/auth';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
+import './Home.css';
 
 export default function Home() {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+	const [file, setFile] = useState(null);
+	const [preview, setPreview] = useState('');
+	const [result, setResult] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-    setResult(null);
-    setError(null);
+	function handleFileChange(e) {
+		setError('');
+		const f = e.target.files && e.target.files[0];
+		if (!f) return;
+		setFile(f);
+		setPreview(URL.createObjectURL(f));
+	}
 
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result);
-      reader.readAsDataURL(selectedFile);
-    } else {
-      setPreview(null);
-    }
+	async function handleAnalyze(e) {
+		e.preventDefault();
+		setError('');
+		setResult(null);
+
+		if (!file) {
+			setError('Please choose an image first');
+			return;
+		}
+
+		setLoading(true);
+		try {
+			const fd = new FormData();
+			fd.append('image', file);
+
+			const resp = await fetch('http://localhost:5000/predict', {
+				method: 'POST',
+				body: fd,
+			});
+
+			const data = await resp.json();
+			if (!resp.ok) throw new Error(data.error || 'Prediction failed');
+
+			setResult(data);
+		} catch (err) {
+			setError(err.message || 'Request failed');
+		} finally {
+			setLoading(false);
+		}
+	}
+
+  function getStatusMessage(resultText) {
+  if (resultText.toLowerCase().includes("dusty")) {
+    return {
+      type: "warning",
+      message:
+        "⚠️ Warning: Dust detected on the solar panel. Cleaning is recommended to improve efficiency.",
+    };
+  }
+
+  return {
+    type: "good",
+    message:
+      "✅ Good News: The solar panel is clean and operating at optimal efficiency.",
   };
+}
 
-  // Upload image and get prediction
-  const handleUpload = async () => {
-    if (!file) {
-      alert("Please select an image first!");
-      return;
-    }
 
-    setLoading(true);
-    setError(null);
+	function handleLogout() {
+		signOut(auth)
+			.then(() => navigate('/'))
+			.catch((err) => setError(err.message || 'Sign out failed'));
+	}
 
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
+	return (
+		<div className="home-page">
+			<header className="home-header">
+				<div>
+					<h1>Solar Panel Dust Detection System</h1>
+					<p>AI-based image analysis for dust detection</p>
+				</div>
+				<button className="logout-btn" onClick={handleLogout}>
+					Sign Out
+				</button>
+			</header>
 
-      const response = await axios.post(
-        `${BACKEND_API}/predict`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+			<main className="home-main">
+				<div className="card">
+					<form onSubmit={handleAnalyze}>
+						<label className="upload-box">
+							<input type="file" accept="image/*" onChange={handleFileChange} hidden />
+							📤 Upload Solar Panel Image
+						</label>
 
-      setResult(response.data);
+						{preview && (
+							<div className="preview">
+								<img src={preview} alt="preview" />
+							</div>
+						)}
 
-      // ⚠️ ONLY show alert if dusty
-      if (response.data.result.toLowerCase().includes("dust")) {
-        alert("⚠️ WARNING: Dust detected on the solar panel!");
-      }
+						{error && <div className="alert error">{error}</div>}
 
-    } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.error || "Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
+						<button type="submit" className="analyze-btn" disabled={loading}>
+							{loading ? 'Analyzing...' : 'Analyze Image'}
+						</button>
+					</form>
 
-  return (
-    <div className="home-container">
-      <h2>Solar Panel Dust Detection</h2>
+					{loading && <div className="loader">🔍 AI is analyzing the image...</div>}
 
-      {/* File Input */}
-      <input type="file" accept="image/*" onChange={handleFileChange} />
+					{/* ✅ RESULT + MESSAGE */}
+          {result && (() => {
+            const status = getStatusMessage(result.result);
 
-      {/* Image Preview */}
-      {preview && (
-        <div className="preview">
-          <h4>Preview:</h4>
-          <img src={preview} alt="preview" className="preview-image" />
+            return (
+              <div
+                className={`result-box ${
+                  status.type === 'good' ? 'clean' : 'dusty'
+                }`}
+              >
+                <h2>{result.result}</h2>
+
+  
+
+                <div
+                  className={`status-message ${
+                    status.type === 'good' ? 'good-msg' : 'warning-msg'
+                  }`}
+                >
+                  {status.message}
+                </div>
+              </div>
+            );
+          })()}
         </div>
-      )}
+      </main>
 
-      {/* Upload Button */}
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? "Analyzing..." : "Check Dustiness"}
-      </button>
 
-      {/* Result & Warning */}
-      {result && (
-        <div className="result">
-          <h3>Result: {result.result}</h3>
-
-          {result.result.toLowerCase().includes("dust") && (
-            <p className="warning">
-              ⚠️ Dust detected! Cleaning the solar panel is recommended.
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Error Message */}
-      {error && <p className="error">{error}</p>}
-    </div>
-  );
+			<footer className="home-footer">
+				Powered by AI & Machine Learning 🌱⚡
+			</footer>
+		</div>
+	);
 }
