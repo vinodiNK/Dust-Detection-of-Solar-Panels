@@ -2,5 +2,5 @@
 
 ## User Interface
 
-### Home Page
-![Home Page](screenshots/login.png)
+### Login Page
+![Login Page](screenshots/login.jpg)
