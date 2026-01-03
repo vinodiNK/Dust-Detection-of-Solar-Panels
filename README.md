@@ -11,8 +11,8 @@
 
 ## 🖥️ User Interface
 
-### Login Page
-![Login Page](frontend/screenshots/login.jpg)
+### Home Page
+![Home Page](frontend/screenshots/home.jpeg)
 
 ### Register Page
 ![Register Page](frontend/screenshots/register.jpg)
